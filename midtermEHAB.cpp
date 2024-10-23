@@ -1,4 +1,4 @@
-// NBALookUp.cpp : This file contains the 'main' function. Program execution begins and ends there.
+// ehabothman.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
 #include <iostream>
@@ -6,6 +6,14 @@
 #include <vector>
 #include <string>
 #include <iomanip>
+#include <limits>
+
+//To do:
+//1. fix errors
+//2. fix ui
+//3. make the stats on one sport
+//4. put the function into the class
+//5. 
 
 using namespace std;
 
@@ -55,28 +63,33 @@ public:
         cout << "Team: " << team << endl;
         // Set precision for floating-point numbers
         cout << fixed << setprecision(2);
-        cout << "Stat1: " << stat1 << endl;
-        cout << "Stat2: " << stat2 << endl;
-        cout << "Stat3: " << stat3 << endl;
-        cout << "Stat4: " << stat4 << endl;
-        cout << "Stat5: " << stat5 << endl;
+        cout << "PPG: " << stat1 << endl;
+        cout << "RPG: " << stat2 << endl;
+        cout << "APG: " << stat3 << endl;
+        cout << "BPG: " << stat4 << endl;
+        cout << "SPG: " << stat5 << endl;
         cout << defaultfloat; // Reset to default formatting
     }
+
+    // Function prototypes
+    void printAllPlayers(vector<Player>& players);
+    void printPlayerStats(vector<Player>& players);
+    void printTeamData(vector<Player>& players);
+    void updatePlayerData(vector<Player>& players);
+    void insertNewPlayer(vector<Player>& players);
 };
 
-// Function prototypes
+//its better to have these fuction outside the class 
 void loadData(vector<Player>& players, string filename);
-void printAllPlayers(vector<Player>& players);
-void printPlayerStats(vector<Player>& players);
-void printTeamData(vector<Player>& players);
-void updatePlayerData(vector<Player>& players);
-void insertNewPlayer(vector<Player>& players);
 void exportData(vector<Player>& players, string filename);
+
 
 int main() {
     vector<Player> players;
+    Player p("ejan", "lakers", 10, 102, 30, 40, 50);
+
     string inputFilename = "input.txt";   // Input file name
-    string outputFilename = "output.txt"; // Output file name
+    string outputFilename = "Testout.txt"; // Output file name
 
     // Load data from file
     loadData(players, inputFilename);
@@ -92,25 +105,42 @@ int main() {
         cout << "5. Insert a new player and their statistics" << endl;
         cout << "6. Export the data to an output file" << endl;
         cout << "7. Exit" << endl;
-        cout << "Enter your choice: ";
-        cin >> choice;
+
+        while (true)
+        {
+            cout << "Enter your choice: ";
+            cin >> choice;
+
+            if (cin.fail())                                                  //This function checks if the input the user put causes a error
+            {
+                cin.clear();                                                 //we first clear the buffer (clearing the error)
+                cin.ignore(numeric_limits< streamsize>::max(), '\n');        // than we discard the input for the max
+                cout << "Invaild input, you MUST enter a number\n";          
+            }
+            else                // if the cin.fail = false than we let the user pass
+            {
+                break;
+            }
+        }
+        
+        
 
         // Perform action based on user's choice
         switch (choice) {
         case 1:
-            printAllPlayers(players);
+            p.printAllPlayers(players);
             break;
         case 2:
-            printPlayerStats(players);
+            p.printPlayerStats(players);
             break;
         case 3:
-            printTeamData(players);
+            p.printTeamData(players);
             break;
         case 4:
-            updatePlayerData(players);
+            p.updatePlayerData(players);
             break;
         case 5:
-            insertNewPlayer(players);
+            p.insertNewPlayer(players);
             break;
         case 6:
             exportData(players, outputFilename);
@@ -120,6 +150,7 @@ int main() {
             break;
         default:
             cout << "Invalid choice. Please select again." << endl;
+            
         }
 
     } while (choice != 7);
@@ -146,7 +177,7 @@ void loadData(vector<Player>& players, string filename) {
 }
 
 // Function to print all players and their statistics
-void printAllPlayers(vector<Player>& players) {
+void Player::printAllPlayers(vector<Player>& players) {
     for (size_t i = 0; i < players.size(); ++i) {
         cout << "Player " << i + 1 << ":" << endl;
         players[i].printPlayer();
@@ -155,7 +186,7 @@ void printAllPlayers(vector<Player>& players) {
 }
 
 // Function to print statistics for a specific player
-void printPlayerStats(vector<Player>& players) {
+void Player::printPlayerStats(vector<Player>& players) {
     string name;
     cout << "Enter the player's name: ";
     cin >> name;
@@ -174,7 +205,7 @@ void printPlayerStats(vector<Player>& players) {
 }
 
 // Function to print all data for a specific team
-void printTeamData(vector<Player>& players) {
+void Player::printTeamData(vector<Player>& players) {
     string team;
     cout << "Enter the team name: ";
     cin >> team;
@@ -193,7 +224,7 @@ void printTeamData(vector<Player>& players) {
 }
 
 // Function to update data for a specific player
-void updatePlayerData(vector<Player>& players) {
+void Player::updatePlayerData(vector<Player>& players) {
     string name;
     cout << "Enter the player's name to update: ";
     cin >> name;
@@ -201,18 +232,22 @@ void updatePlayerData(vector<Player>& players) {
     // Search for the player by name
     for (size_t i = 0; i < players.size(); ++i) {
         if (players[i].getName() == name) {
+            string t;
             double s1, s2, s3, s4, s5;
-            cout << "Enter new stat1: ";
+            cout << "Enter new Team: ";
+            cin >> t;
+            cout << "Enter new PPG: ";
             cin >> s1;
-            cout << "Enter new stat2: ";
+            cout << "Enter new RPG: ";
             cin >> s2;
-            cout << "Enter new stat3: ";
+            cout << "Enter new APG: ";
             cin >> s3;
-            cout << "Enter new stat4: ";
+            cout << "Enter new BPG: ";
             cin >> s4;
-            cout << "Enter new stat5: ";
+            cout << "Enter new SPG: ";
             cin >> s5;
             // Update player's statistics
+            players[i].setTeam(t);
             players[i].setStat1(s1);
             players[i].setStat2(s2);
             players[i].setStat3(s3);
@@ -229,22 +264,22 @@ void updatePlayerData(vector<Player>& players) {
 }
 
 // Function to insert a new player and their statistics
-void insertNewPlayer(vector<Player>& players) {
+void Player::insertNewPlayer(vector<Player>& players) {
     string name, team;
     double s1, s2, s3, s4, s5;
     cout << "Enter player's name: ";
     cin >> name;
     cout << "Enter player's team: ";
     cin >> team;
-    cout << "Enter stat1: ";
+    cout << "Enter PPG: ";
     cin >> s1;
-    cout << "Enter stat2: ";
+    cout << "Enter RPG: ";
     cin >> s2;
-    cout << "Enter stat3: ";
+    cout << "Enter APG: ";
     cin >> s3;
-    cout << "Enter stat4: ";
+    cout << "Enter BPG: ";
     cin >> s4;
-    cout << "Enter stat5: ";
+    cout << "Enter SPG: ";
     cin >> s5;
     // Create a new player and add to the list
     Player p(name, team, s1, s2, s3, s4, s5);
@@ -272,4 +307,3 @@ void exportData(vector<Player>& players, string filename) {
     outfile.close();
     cout << "Data exported to " << filename << endl;
 }
-
