@@ -221,7 +221,7 @@ void Player::printPlayerStats(vector<Player>& players) {
 
     // Search for the player by name
     for (size_t i = 0; i < players.size(); ++i) {
-        if (players[i].getFirstName() == FirstName || players[i].getFirstName() == LastName) {
+        if (players[i].getFirstName() == FirstName || players[i].getLastName() == LastName) {
             players[i].printPlayer();
             found = true;
             break;
