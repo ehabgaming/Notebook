@@ -100,8 +100,8 @@ int main() {
     vector<Player> players;
     Player p("ejan","wood", "lakers", 10, 102, 30, 40, 50);
 
-    string inputFilename = "NBAPlayers.txt";   // Input file name
-    string outputFilename = "Testout.txt"; // Output file name
+    string inputFilename = "testout.txt";   // Input file name
+    string outputFilename = "output.txt"; // Output file name
 
     // Load data from file
     loadData(players, inputFilename);
@@ -141,26 +141,32 @@ int main() {
         // Perform action based on user's choice
         switch (choice) {
         case 1:
+            system("cls");
             p.printAllPlayers(players);
             HoldandClearConsole();
             break;
         case 2:
+            system("cls");
             p.printPlayerStats(players);
             HoldandClearConsole();
             break;
         case 3:
+            system("cls");
             p.printTeamData(players);
             HoldandClearConsole();
             break;
         case 4:
+            system("cls");
             p.updatePlayerData(players);
             HoldandClearConsole();
             break;
         case 5:
+            system("cls");
             p.insertNewPlayer(players);
             HoldandClearConsole();
             break;
         case 6:
+            system("cls");
             exportData(players, outputFilename);
             HoldandClearConsole();
             break;
@@ -169,7 +175,7 @@ int main() {
             break;
         default:
             cout << "Invalid choice. Please select again." << endl;
-            cin.get();
+            HoldandClearConsole();
         }
 
     } while (choice != 7);
